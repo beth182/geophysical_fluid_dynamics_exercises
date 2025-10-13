@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 
 # ==============================================================================
-# GFD exercise 1: Lorenz System
+# GFD exercise 1, Problem 1.3: The Lorenz System
 # Beth Saunders 03/10/2025
 # ==============================================================================
 
@@ -11,27 +11,47 @@ import os
 current_filepath = os.getcwd().replace('\\', '/') + '/'
 assert os.path.exists(current_filepath)
 
-# Initial conditions
+# Initial conditions (as given in the exercise as (X, Y, Z) = (0, 1, 0)
 X0 = 0.0
 Y0 = 1.0
 Z0 = 0.0
 
-# Some parameters
-p = 10
-beta = 8 / 3
+# Assuming typical parameters for the atmosphere
+p = 10  # Prandtl number, which describes the ratio of momentum diffusivity (kinematic viscosity) and thermal diffusivity
+beta = 8 / 3  # a geometrical factor (all the ‘proportionalities’ in the variables arise from the fact that Lorenz solved the system in a non-dimensional form).
+
+# timestep
+dt = 0.01
+
+# user-set (reduced) Rayleigh Number that determines whether the heat transfer is primarily in the form of conduction or convection
+
 # r = 0.5
 # r = 22
 r = 28
-dt = 0.01
 
 # Time vector
 t = np.arange(0, 100 + dt, dt)
 nt = len(t)
 
+
 # ==============================================================================
 # Runge-Kutta integration
 # ==============================================================================
 def rk4_lorenz(X0, Y0, Z0, p, beta, r, dt, nt):
+    """
+    Using the fourth-order Runge-Kutta method (given in Appendix 1) to solve an example from Lorenz (1993).
+
+    :param X0: Initial X condition
+    :param Y0: Initial Y condition
+    :param Z0: Initial Z condition
+    :param p: Prandtl number, which describes the ratio of momentum diffusivity (kinematic viscosity) and thermal diffusivity
+    :param beta: a geometrical factor (all the ‘proportionalities’ in the variables arise from the fact that Lorenz solved the system in a non-dimensional form).
+    :param r: (reduced) Rayleigh Number that determines whether the heat transfer is primarily in the form of conduction or convection
+    :param dt: timestep
+    :param nt: time vector
+    :return: X, Y, Z
+    """
+
     X = np.zeros(nt)
     Y = np.zeros(nt)
     Z = np.zeros(nt)
@@ -57,16 +77,14 @@ def rk4_lorenz(X0, Y0, Z0, p, beta, r, dt, nt):
         # Z1 =
         Z1 = Z[it - 1] + (dZdt * (dt / 2))
 
-
         # TASK 2: add the equations for dYdt, dZdt, Y2, and Z2
-
         dXdt = p * (Y1 - X1)
 
         # dYdt =
         dYdt = (X1 * (r - Z1)) - Y1
 
         # dZdt =
-        dZdt = (X1*Y1) - (beta*Z1)
+        dZdt = (X1 * Y1) - (beta * Z1)
 
         X2 = X[it - 1] + (dXdt * (dt / 2))
 
@@ -74,18 +92,16 @@ def rk4_lorenz(X0, Y0, Z0, p, beta, r, dt, nt):
         Y2 = Y[it - 1] + (dYdt * (dt / 2))
 
         # Z2 =
-        Z2 =Z[it - 1] + (dZdt * (dt / 2))
+        Z2 = Z[it - 1] + (dZdt * (dt / 2))
 
         # TASK 3: Calculate steps 3 & 4
-
         # dXdt =
         # dYdt =
         # dZdt =
         # X3 =
         # Y3 =
         # Z3 =
-        #
-        #
+
         # dXdt =
         # dYdt =
         # dZdt =
@@ -93,47 +109,31 @@ def rk4_lorenz(X0, Y0, Z0, p, beta, r, dt, nt):
         # Y4 =
         # Z4 =
 
-
         dXdt = p * (Y2 - X2)
         dYdt = (X2 * (r - Z2)) - Y2
-        dZdt = (X2*Y2) - (beta*Z2)
+        dZdt = (X2 * Y2) - (beta * Z2)
         X3 = X[it - 1] + (dXdt * dt)
         Y3 = Y[it - 1] + (dYdt * dt)
         Z3 = Z[it - 1] + (dZdt * dt)
 
-        # dXdt = p * (Y3 - X3);
-        # dYdt = X3 * (r - Z3) - Y3;
-        # dZdt = X3 * Y3 - beta * Z3;
-        # X4 = X(it - 1) - dXdt * dt / 2;
-        # Y4 = Y(it - 1) - dYdt * dt / 2;
-        # Z4 = Z(it - 1) - dZdt * dt / 2;
-
         dXdt = p * (Y3 - X3)
         dYdt = (X3 * (r - Z3)) - Y3
-        dZdt = (X3*Y3) - (beta*Z3)
+        dZdt = (X3 * Y3) - (beta * Z3)
         X4 = X[it - 1] - (dXdt * (dt / 2))
         Y4 = Y[it - 1] - (dYdt * (dt / 2))
-        Z4 =Z[it - 1] - (dZdt * (dt / 2))
-
+        Z4 = Z[it - 1] - (dZdt * (dt / 2))
 
         # TASK 4: Add the equations for X(it), Y(it), and Z(it)
-
         # X[it] =
         # Y[it] =
         # Z[it] =
 
-        # X(it) = (X1 + 2 * X2 + X3 - X4) / 3;
-        # Y(it) = (Y1 + 2 * Y2 + Y3 - Y4) / 3;
-        # Z(it) = (Z1 + 2 * Z2 + Z3 - Z4) / 3;
-
-        X[it] = (X1 + (2*X2) + X3 - X4) / 3
-        Y[it] = (Y1 + (2*Y2) + Y3 - Y4) / 3
-        Z[it] = (Z1 + (2*Z2) + Z3 - Z4) / 3
-
-
-
+        X[it] = (X1 + (2 * X2) + X3 - X4) / 3
+        Y[it] = (Y1 + (2 * Y2) + Y3 - Y4) / 3
+        Z[it] = (Z1 + (2 * Z2) + Z3 - Z4) / 3
 
     return X, Y, Z
+
 
 # ====== Time integration ====================================================
 X, Y, Z = rk4_lorenz(X0, Y0, Z0, p, beta, r, dt, nt)
@@ -148,16 +148,13 @@ plt.xlim(0, 75)
 plt.xlabel('Time')
 plt.legend(loc='upper right', fontsize=12)
 plt.grid()
-
-# plt.savefig(save_path + 'path_transect.png', bbox_inches='tight', dpi=300)
-plt.savefig(current_filepath + 'r_' + str(r).replace('.', '_')+ '.png', bbox_inches='tight', dpi=300)
-# plt.show()
+plt.savefig(current_filepath + 'r_' + str(r).replace('.', '_') + '.png', bbox_inches='tight', dpi=300)
 
 if abs(r - 28.0) < 1e-5:
     # Butterfly plot
     fig = plt.figure(figsize=(7, 7))
     ax = fig.add_subplot(111, projection='3d')
-    ax.plot(X, Y, Z, 'k',  linewidth=0.5)
+    ax.plot(X, Y, Z, 'k', linewidth=0.5)
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
