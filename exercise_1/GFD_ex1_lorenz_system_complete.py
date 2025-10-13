@@ -19,9 +19,9 @@ Z0 = 0.0
 # Some parameters
 p = 10
 beta = 8 / 3
-# r = 0.5
+r = 0.5
 # r = 22
-r = 28
+# r = 28
 dt = 0.01
 
 # Time vector
@@ -97,9 +97,9 @@ def rk4_lorenz(X0, Y0, Z0, p, beta, r, dt, nt):
         dXdt = p * (Y2 - X2)
         dYdt = (X2 * (r - Z2)) - Y2
         dZdt = (X2*Y2) - (beta*Z2)
-        X3 = X[it - 1] + (dXdt * (dt / 2))
-        Y3 = Y[it - 1] + (dYdt * (dt / 2))
-        Z3 =Z[it - 1] + (dZdt * (dt / 2))
+        X3 = X[it - 1] + (dXdt * dt)
+        Y3 = Y[it - 1] + (dYdt * dt)
+        Z3 = Z[it - 1] + (dZdt * dt)
 
         # dXdt = p * (Y3 - X3);
         # dYdt = X3 * (r - Z3) - Y3;
