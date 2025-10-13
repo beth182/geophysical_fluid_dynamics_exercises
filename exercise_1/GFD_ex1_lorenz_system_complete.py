@@ -25,9 +25,9 @@ dt = 0.01
 
 # user-set (reduced) Rayleigh Number that determines whether the heat transfer is primarily in the form of conduction or convection
 
-# r = 0.5
+r = 0.5
 # r = 22
-r = 28
+# r = 28
 
 # Time vector
 t = np.arange(0, 100 + dt, dt)
