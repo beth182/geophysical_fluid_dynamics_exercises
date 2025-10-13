@@ -19,9 +19,9 @@ Z0 = 0.0
 # Some parameters
 p = 10
 beta = 8 / 3
-r = 0.5
+# r = 0.5
 # r = 22
-# r = 28
+r = 28
 dt = 0.01
 
 # Time vector
@@ -144,10 +144,13 @@ plt.title(f'r = {r}')
 plt.plot(t, X, 'k', label='X', linewidth=1.2)
 plt.plot(t, Y, 'g--', label='Y', linewidth=1.2)
 plt.plot(t, Z, 'r', label='Z', linewidth=1.2)
+plt.xlim(0, 75)
 plt.xlabel('Time')
 plt.legend(loc='upper right', fontsize=12)
 plt.grid()
-plt.savefig(current_filepath + 'r_' + str(r).replace('.', '_')+ '.png', dpi=300)
+
+# plt.savefig(save_path + 'path_transect.png', bbox_inches='tight', dpi=300)
+plt.savefig(current_filepath + 'r_' + str(r).replace('.', '_')+ '.png', bbox_inches='tight', dpi=300)
 # plt.show()
 
 if abs(r - 28.0) < 1e-5:
@@ -158,4 +161,4 @@ if abs(r - 28.0) < 1e-5:
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    plt.savefig(current_filepath + 'butterfly.png', dpi=300)
+    plt.savefig(current_filepath + 'butterfly.png', bbox_inches='tight', dpi=300)
